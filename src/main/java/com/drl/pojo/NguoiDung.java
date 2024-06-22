@@ -22,6 +22,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -57,12 +59,14 @@ public class NguoiDung implements Serializable {
     private Integer id;
     @Size(max = 45)
     @Column(name = "ho")
+    @NotNull(message = "{hoatdong.ten.minMax}")
     private String ho;
     @Size(max = 45)
     @Column(name = "ten")
+    @NotNull(message = "{hoatdong.ten.minMax}")
     private String ten;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "nam_sinh")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.TIMESTAMP)
     private Date namSinh;
     @Column(name = "gioi_tinh")
@@ -72,7 +76,8 @@ public class NguoiDung implements Serializable {
     private String avatar;
     // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Size(max = 45)
-    @Column(name = "email")
+    @Column(name = "email", unique = true )
+    @Email(message = "{email.error}" )
     private String email;
     @Size(max = 200)
     @Column(name = "password")
@@ -81,7 +86,7 @@ public class NguoiDung implements Serializable {
     @Column(name = "user_role")
     private String userRole;
     @Size(max = 45)
-    @Column(name = "username")
+    @Column(name = "username", unique = true)
     private String username;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "nguoiDung")
     private ChuyenVienCtsv chuyenVienCtsv;
@@ -93,7 +98,6 @@ public class NguoiDung implements Serializable {
     private SinhVien sinhVien;
     @Transient
     private MultipartFile file;
-
     public NguoiDung() {
     }
 

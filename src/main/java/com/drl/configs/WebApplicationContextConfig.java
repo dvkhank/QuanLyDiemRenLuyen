@@ -5,10 +5,12 @@
 package com.drl.configs;
 
 import com.drl.formatters.DieuFormatter;
+import com.drl.formatters.HoatDongFormatter;
 import com.drl.formatters.HocKiNamHocFormatter;
 import com.drl.formatters.KhoaFormatter;
 import com.drl.formatters.NguoiDungFormatter;
 import com.drl.formatters.TroLySinhVienFormatter;
+import java.util.Locale;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -21,8 +23,11 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
+import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 /**
  *
@@ -83,6 +88,7 @@ public class WebApplicationContextConfig implements WebMvcConfigurer {
         registry.addFormatter(new HocKiNamHocFormatter());
         registry.addFormatter(new TroLySinhVienFormatter());
         registry.addFormatter(new NguoiDungFormatter());
+        registry.addFormatter(new HoatDongFormatter());
     }
 
     @Bean
@@ -92,7 +98,24 @@ public class WebApplicationContextConfig implements WebMvcConfigurer {
         resolver.setDefaultEncoding("UTF-8");
         return resolver;
     }
-    
+        @Bean
+    public SessionLocaleResolver localeResolver() {
+        SessionLocaleResolver localeResolver = new SessionLocaleResolver();
+        localeResolver.setDefaultLocale(Locale.ENGLISH); // Ngôn ngữ mặc định
+        return localeResolver;
+    }
+
+    @Bean
+    public LocaleChangeInterceptor localeChangeInterceptor() {
+        LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
+        localeChangeInterceptor.setParamName("lang"); // Tham số trên URL để thay đổi ngôn ngữ
+        return localeChangeInterceptor;
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(localeChangeInterceptor());
+    }
     
 
 }

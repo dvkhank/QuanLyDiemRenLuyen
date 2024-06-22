@@ -40,6 +40,22 @@ Click nbfs://nbhost/SystemFileSystem/Templates/XML/XMLDocument.xml to edit this 
         <put-attribute name="title" value="Đăng Nhập Admin" />
         <put-attribute name="content" value="/WEB-INF/pages/login.jsp" />
     </definition>
+    <definition name="napdiem" extends="baseLayout">
+        <put-attribute name="title" value="Nạp điểm" />
+        <put-attribute name="content" value="/WEB-INF/pages/napdiem.jsp" />
+    </definition>
+        <definition name="baiviet" extends="baseLayout">
+        <put-attribute name="title" value="Bài Viết" />
+        <put-attribute name="content" value="/WEB-INF/pages/baiviet.jsp" />
+    </definition>
+            <definition name="baiviets" extends="baseLayout">
+        <put-attribute name="title" value="Bảng tin" />
+        <put-attribute name="content" value="/WEB-INF/pages/baiviets.jsp" />
+    </definition>
+    <definition name="baothieu" extends="baseLayout">
+        <put-attribute name="title" value="Bào thiếu" />
+        <put-attribute name="content" value="/WEB-INF/pages/baothieu.jsp" />
+    </definition>
 </tiles-definitions>
 
 

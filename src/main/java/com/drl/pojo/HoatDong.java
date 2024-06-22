@@ -19,6 +19,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -36,7 +38,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "HoatDong.findById", query = "SELECT h FROM HoatDong h WHERE h.id = :id"),
     @NamedQuery(name = "HoatDong.findByTen", query = "SELECT h FROM HoatDong h WHERE h.ten = :ten"),
     @NamedQuery(name = "HoatDong.findByMoTa", query = "SELECT h FROM HoatDong h WHERE h.moTa = :moTa"),
-    @NamedQuery(name = "HoatDong.findByDiem", query = "SELECT h FROM HoatDong h WHERE h.diem = :diem")})
+    @NamedQuery(name = "HoatDong.findByDiem", query = "SELECT h FROM HoatDong h WHERE h.diem = :diem"),
+    @NamedQuery(name = "HoatDong.findByPhi", query = "SELECT h FROM HoatDong h WHERE h.phi = :phi")})
 public class HoatDong implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -47,14 +50,21 @@ public class HoatDong implements Serializable {
     private Integer id;
     @Size(max = 200)
     @Column(name = "ten")
+    @NotNull(message = "{hoatdong.ten.nullErr}")
+    @Min(value = 5, message = "{hoatdong.ten.minMax}")
     private String ten;
     @Size(max = 400)
     @Column(name = "mo_ta")
     private String moTa;
     @Basic(optional = false)
     @NotNull
+    @Max(value = 10,message = "{hoatdong.diem.sizeErr}")
+    @Min(value = 3,message = "{hoatdong.diem.sizeErr}")
+
     @Column(name = "diem")
     private int diem;
+    @Column(name = "phi")
+    private Long phi;
     @JoinColumn(name = "dieu_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Dieu dieuId;
@@ -114,6 +124,14 @@ public class HoatDong implements Serializable {
 
     public void setDiem(int diem) {
         this.diem = diem;
+    }
+
+    public Long getPhi() {
+        return phi;
+    }
+
+    public void setPhi(Long phi) {
+        this.phi = phi;
     }
 
     public Dieu getDieuId() {

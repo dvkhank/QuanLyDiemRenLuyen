@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -72,10 +73,6 @@ public class StatsController {
             lopId = Integer.parseInt(lopIdString);
         }
         model.addAttribute("statsDiemRenLuyenTheoThanhTich", this.StatsService.statsDiemRenLuyenTheoThanhTich(min, max, hocKi, namHoc, lopId));
-        
-        
-        
-        
         return "stats";
 //        List<Object[]> statsTheoKhoa = this.StatsService.statsDiemRenLuyenTheoKhoa();
 //        for (Object[] c : statsTheoKhoa) {
@@ -83,4 +80,13 @@ public class StatsController {
 //        }
 //        return "stats";
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }

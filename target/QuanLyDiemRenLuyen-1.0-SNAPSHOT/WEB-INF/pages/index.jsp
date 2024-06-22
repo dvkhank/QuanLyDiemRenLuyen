@@ -10,8 +10,15 @@
 uri="http://www.springframework.org/security/tags" %> 
 <sec:authorize access="hasRole('ROLE_ADMIN')">
 <div class="mt-1">
+        <h1>${greetingMessage}</h1>
+    <p>Change language: 
+        <a href="?lang=en">English</a> | 
+        <a href="?lang=vi">Vietnamese</a> |
+            <a href="?lang=jp">Japanese</a>
+
+    </p>
     <div>
-        <a href="<c:url value="/admin/hoatdongs" />" class="btn btn-info">Thêm hoạt động</a>
+        <a href="<c:url value="/admin/hoatdongs" />" class="btn btn-info">${addMessage}</a>
     </div>
 
     <table class="table table-striped mt-1">
@@ -41,10 +48,10 @@ uri="http://www.springframework.org/security/tags" %>
                     <td>${c.hocKiNamHocId.getHocKiId().getHocKi()}</td>
                     <td>${c.hocKiNamHocId.getNamHocId().getNamHoc()}</td>                     
                     <td>${c.troLyId.getNguoiDung().getHo()}  ${c.troLyId.getNguoiDung().getTen()}</td>
-                    <c:url value="/admin/hoatdongs/${c.id}" var="url"/>
+                    <c:url value="/hoatdongs/${c.id}" var="url"/>
                     <td>
-                        <a href="<c:url value="/admin/hoatdongs/${c.id}" />" class="btn btn-info">Cập nhật</a>
-                        <button onclick="deleteHoatDong('${url}')" class="btn btn-danger">Xóa</button>
+                        <a href="<c:url value="/admin/hoatdongs/${c.id}" />" class="btn btn-info">${update}</a>
+                        <button onclick="deleteHoatDong('${url}')" class="btn btn-danger">${delete}</button>
                     </td>
                 </tr>
             </c:forEach>

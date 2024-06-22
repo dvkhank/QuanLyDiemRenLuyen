@@ -11,10 +11,11 @@ import javax.persistence.metamodel.SetAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.7.10.v20211216-rNA", date="2024-05-18T01:26:58")
+@Generated(value="EclipseLink-2.7.10.v20211216-rNA", date="2024-06-21T19:36:39")
 @StaticMetamodel(HoatDong.class)
 public class HoatDong_ { 
 
+    public static volatile SingularAttribute<HoatDong, Long> phi;
     public static volatile SingularAttribute<HoatDong, Integer> diem;
     public static volatile SingularAttribute<HoatDong, TroLySinhVien> troLyId;
     public static volatile SetAttribute<HoatDong, BaiViet> baiVietSet;

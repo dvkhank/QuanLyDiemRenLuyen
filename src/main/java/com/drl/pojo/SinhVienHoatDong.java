@@ -5,7 +5,9 @@
 package com.drl.pojo;
 
 import java.io.Serializable;
+import java.util.Set;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,8 +17,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -45,6 +49,8 @@ public class SinhVienHoatDong implements Serializable {
     @JoinColumn(name = "sinh_vien_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private SinhVien sinhVienId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "sinhVienHoatDongId")
+    private Set<BaoThieu> baoThieuSet;
 
     public SinhVienHoatDong() {
     }
@@ -83,6 +89,15 @@ public class SinhVienHoatDong implements Serializable {
 
     public void setSinhVienId(SinhVien sinhVienId) {
         this.sinhVienId = sinhVienId;
+    }
+
+    @XmlTransient
+    public Set<BaoThieu> getBaoThieuSet() {
+        return baoThieuSet;
+    }
+
+    public void setBaoThieuSet(Set<BaoThieu> baoThieuSet) {
+        this.baoThieuSet = baoThieuSet;
     }
 
     @Override

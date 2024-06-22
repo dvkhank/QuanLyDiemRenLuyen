@@ -13,7 +13,7 @@
 </c:if>
 <c:if test="${param.accessDenied !=null}">
     <div class="alert-danger">
-       Bạn không có quyền
+        Bạn không có quyền
     </div>
 </c:if>
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
@@ -29,7 +29,7 @@
                         <c:url var="myUrl" value="/">
                             <c:param name="dieuId" value="${c.id}"/>
                         </c:url>
-                        <a class="nav-link" href="${myUrl}">Điều ${c.dieu}</a>
+                        <a class="nav-link" href="${myUrl}">${ruleMessage} ${c.dieu}</a>
                     </li>
                 </c:forEach>
 
@@ -37,11 +37,12 @@
 
 
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Tính năng</a>
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">${featureMessage}</a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Bảng tin</a></li>
+                        <li><a class="dropdown-item" href="<c:url value="/admin/baiviets" />">Bảng tin</a></li>
+                        <li><a class="dropdown-item" href="<c:url value="/admin/baothieus" />">Báo thiếu</a></li>
                         <li><a class="dropdown-item btn-info" href="<c:url value="/admin/stats" />">Thống kê</a></li>
-                        <li><a class="dropdown-item" href="#">Hỏi đáp</a></li>
+                        <li><a class="dropdown-item" href="<c:url value="/admin/napdiem" />">Nạp điểm</a></li>
                         <li><a class="dropdown-item" href="<c:url value="/admin/troly" />">Tạo trợ lý</a></li>
                     </ul>
                 </li>

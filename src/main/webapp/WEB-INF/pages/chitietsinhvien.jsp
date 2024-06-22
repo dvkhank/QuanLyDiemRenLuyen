@@ -7,7 +7,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-
+<c:set var="tongDiem" value="0" />
 <div class="row">
     <h1 class="text-center text-info mt-3">THÔNG TIN CHI TIẾT CỦA SINH VIÊN</h1>
     <div class="col-mt-5 col-12 mt-3">
@@ -81,6 +81,8 @@
                     <th>Tổng điểm điều 1</th>
                         <c:forEach items="${diemdieu1}" var="c">
                         <th colspan="2">${c[2]}</th>
+                            <c:set var="tongDiem" value="${tongDiem + c[2]}" />
+
 
                     </c:forEach>
                 </tr>
@@ -98,6 +100,8 @@
                     <th>Tổng điểm điều 2</th>
                         <c:forEach items="${diemdieu2}" var="c">
                         <th colspan="2">${c[2]}</th>
+                            <c:set var="tongDiem" value="${tongDiem + c[2]}" />
+
 
                     </c:forEach>
                 </tr>
@@ -115,6 +119,8 @@
                     <th>Tổng điểm điều 3</th>
                         <c:forEach items="${diemdieu3}" var="c">
                         <th colspan="2">${c[2]}</th>
+                            <c:set var="tongDiem" value="${tongDiem + c[2]}" />
+
 
                     </c:forEach>
                 </tr>
@@ -132,6 +138,8 @@
                     <th>Tổng điểm điều 4</th>
                         <c:forEach items="${diemdieu4}" var="c">
                         <th colspan="2">${c[2]}</th>
+                            <c:set var="tongDiem" value="${tongDiem + c[2]}" />
+
 
                     </c:forEach>
                 </tr>
@@ -149,8 +157,14 @@
                     <th>Tổng điểm điều 5</th>
                         <c:forEach items="${diemdieu5}" var="c">
                         <th colspan="2">${c[2]}</th>
+                            <c:set var="tongDiem" value="${tongDiem + c[2]}" />
+
 
                     </c:forEach>
+                </tr>
+                <tr style="margin-top: 20p; padding: 10px" class="table-success">
+                    <th colspan="2">Tổng điểm của sinh viên: </th>
+                    <th >${tongDiem} </th>
                 </tr>
 
 

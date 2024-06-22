@@ -92,7 +92,7 @@ public class HoatDongRepositoryImpl implements HoatDongRepository {
     @Override
     public void deleteHoatDong(int id) {
         Session s = this.factory.getObject().getCurrentSession();
-        Query query = s.createQuery("FROM SinhVienHoatDong WHERE hoatDongId = :id");
+        Query query = s.createQuery("FROM SinhVienHoatDong WHERE hoatDongId.id = :id");
         query.setParameter("id", id);
         List<SinhVienHoatDong> rs = query.getResultList();
         for(SinhVienHoatDong svhd : rs) {
@@ -100,6 +100,8 @@ public class HoatDongRepositoryImpl implements HoatDongRepository {
         }
         
         HoatDong h = this.getHoatDongByIDd(id);
+        System.out.print(h);
+
         s.delete(h);
     }
     @Override

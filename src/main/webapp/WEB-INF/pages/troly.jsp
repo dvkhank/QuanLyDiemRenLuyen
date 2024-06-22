@@ -16,7 +16,10 @@
 <!DOCTYPE html>
 <h1 class="text-center text-info mt-1">Thêm trợ lý sinh viên</h1>
 <c:url value="/admin/troly" var="actions" />
+
 <form:form action="${actions}" modelAttribute="nguoidung" method="post" enctype="multipart/form-data">
+        <form:errors path="*" element="div" cssClass="alert alert-danger"></form:errors>
+
     <div class="form-floating mb-3 mt-3">
         <form:input type="text" class="form-control" id="ho" placeholder="Nhập họ trợ lý" path="ho" />
         <label for="ho">Họ trợ lý</label>
@@ -26,7 +29,7 @@
         <label for="ten">Tên trợ lý</label>
     </div>
     <div class="form-floating mb-3 mt-3">
-        <form:input type="text" class="form-control" id="namsinh" placeholder="YYY-MM-DD" path="namSinh" />
+        <form:input type="text" class="form-control" id="namsinh" placeholder="YYYY-MM-DD" path="namSinh" />
         <label for="namsinh">Ngày sinh</label>
     </div>
     <div class="form-floating mb-3 mt-3">
