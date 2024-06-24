@@ -4,6 +4,7 @@
  */
 package com.drl.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
@@ -11,6 +12,8 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -20,10 +23,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
@@ -42,26 +46,30 @@ public class BaiViet implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "id")
     private Integer id;
-    @Size(max = 45)
+    @Size(max = 1000)
     @Column(name = "ten")
+    @NotEmpty(message = "Tên không được phép rỗng")
     private String ten;
     @Column(name = "ngay_tao")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.TIMESTAMP)
     private Date ngayTao;
-    @Size(max = 105)
+    @Size(max = 1000)
     @Column(name = "noi_dung")
     private String noiDung;
     @JoinColumn(name = "hoat_dong_id", referencedColumnName = "id")
     @ManyToOne
     private HoatDong hoatDongId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "baiVietId")
+    @JsonIgnore
     private Set<Comment> commentSet;
 
     public BaiViet() {
+        this.ngayTao = new Date();
     }
 
     public BaiViet(Integer id) {
@@ -109,6 +117,7 @@ public class BaiViet implements Serializable {
     }
 
     @XmlTransient
+    @JsonIgnore
     public Set<Comment> getCommentSet() {
         return commentSet;
     }

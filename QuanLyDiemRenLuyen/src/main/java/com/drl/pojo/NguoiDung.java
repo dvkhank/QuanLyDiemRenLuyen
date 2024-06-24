@@ -4,6 +4,7 @@
  */
 package com.drl.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
@@ -21,9 +22,15 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -41,7 +48,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "NguoiDung.findByGioiTinh", query = "SELECT n FROM NguoiDung n WHERE n.gioiTinh = :gioiTinh"),
     @NamedQuery(name = "NguoiDung.findByAvatar", query = "SELECT n FROM NguoiDung n WHERE n.avatar = :avatar"),
     @NamedQuery(name = "NguoiDung.findByEmail", query = "SELECT n FROM NguoiDung n WHERE n.email = :email"),
-    @NamedQuery(name = "NguoiDung.findByPassword", query = "SELECT n FROM NguoiDung n WHERE n.password = :password")})
+    @NamedQuery(name = "NguoiDung.findByPassword", query = "SELECT n FROM NguoiDung n WHERE n.password = :password"),
+    @NamedQuery(name = "NguoiDung.findByUserRole", query = "SELECT n FROM NguoiDung n WHERE n.userRole = :userRole"),
+    @NamedQuery(name = "NguoiDung.findByUsername", query = "SELECT n FROM NguoiDung n WHERE n.username = :username")})
 public class NguoiDung implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -52,11 +61,14 @@ public class NguoiDung implements Serializable {
     private Integer id;
     @Size(max = 45)
     @Column(name = "ho")
+    @NotEmpty(message = "{hoatdong.ho.nullErr}")
     private String ho;
     @Size(max = 45)
     @Column(name = "ten")
+    @NotEmpty(message = "{hoatdong.ten.nullErr}")
     private String ten;
     @Column(name = "nam_sinh")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.TIMESTAMP)
     private Date namSinh;
     @Column(name = "gioi_tinh")
@@ -66,20 +78,37 @@ public class NguoiDung implements Serializable {
     private String avatar;
     // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Size(max = 45)
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
+    @Email(message = "{email.error}" )
+    @NotEmpty(message = "{email.notnull}")
     private String email;
-    @Size(max = 45)
+    @Size(max = 200)
     @Column(name = "password")
+    @NotEmpty(message = "{password.notnull}")
     private String password;
+    @Size(max = 45)
+    @Column(name = "user_role")
+    private String userRole;
+    @Size(max = 45)
+    @Column(name = "username", unique = true)
+    @NotEmpty(message = "{username.notnull}")
+    private String username;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "nguoiDung")
+    @JsonIgnore
     private ChuyenVienCtsv chuyenVienCtsv;
+    @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "nguoiDung")
     private TroLySinhVien troLySinhVien;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "nguoiDungId")
+    @JsonIgnore
     private Set<Comment> commentSet;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "nguoiDung")
+    @JsonIgnore
     private SinhVien sinhVien;
-
+    @Transient
+    @JsonIgnore
+    @XmlTransient
+    private MultipartFile file;
     public NguoiDung() {
     }
 
@@ -151,6 +180,22 @@ public class NguoiDung implements Serializable {
         this.password = password;
     }
 
+    public String getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(String userRole) {
+        this.userRole = userRole;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public ChuyenVienCtsv getChuyenVienCtsv() {
         return chuyenVienCtsv;
     }
@@ -207,6 +252,20 @@ public class NguoiDung implements Serializable {
     @Override
     public String toString() {
         return "com.drl.pojo.NguoiDung[ id=" + id + " ]";
+    }
+
+    /**
+     * @return the file
+     */
+    public MultipartFile getFile() {
+        return file;
+    }
+
+    /**
+     * @param file the file to set
+     */
+    public void setFile(MultipartFile file) {
+        this.file = file;
     }
     
 }

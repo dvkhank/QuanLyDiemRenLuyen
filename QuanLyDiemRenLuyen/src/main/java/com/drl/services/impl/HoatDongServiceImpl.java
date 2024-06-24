@@ -5,6 +5,7 @@
 package com.drl.services.impl;
 
 import com.drl.pojo.HoatDong;
+import com.drl.pojo.SinhVienHoatDong;
 import com.drl.repositories.HoatDongRepository;
 import com.drl.services.HoatDongService;
 import java.util.List;
@@ -39,6 +40,26 @@ public class HoatDongServiceImpl implements HoatDongService{
     @Override
     public void deleteHoatDong(int id) {
         this.hoatDongRepo.deleteHoatDong(id);
+    }
+
+    @Override
+    public List<HoatDong> getAllHoatDongs() {
+        return this.hoatDongRepo.getAllHoatDongs();
+    }
+
+    @Override
+    public List<Object[]> getAllHoatDongTheoSinhVien(int hocki, int sinhvien) {
+        return this.hoatDongRepo.getAllHoatDongTheoSinhVien(hocki, sinhvien);
+    }
+
+    @Override
+    public List<HoatDong> getHoatDongDangKy(int hocki, int sinhvien) {
+        return this.hoatDongRepo.getHoatDongDangKy(hocki, sinhvien);
+    }
+
+    @Override
+    public SinhVienHoatDong taoDangKySuKien(SinhVienHoatDong svhd) {
+        return this.hoatDongRepo.taoDangKySuKien(svhd);
     }
     
 }

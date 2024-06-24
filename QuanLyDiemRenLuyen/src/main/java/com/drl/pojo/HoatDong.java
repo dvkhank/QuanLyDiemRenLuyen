@@ -4,6 +4,7 @@
  */
 package com.drl.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.Basic;
@@ -21,6 +22,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -38,7 +40,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "HoatDong.findById", query = "SELECT h FROM HoatDong h WHERE h.id = :id"),
     @NamedQuery(name = "HoatDong.findByTen", query = "SELECT h FROM HoatDong h WHERE h.ten = :ten"),
     @NamedQuery(name = "HoatDong.findByMoTa", query = "SELECT h FROM HoatDong h WHERE h.moTa = :moTa"),
-    @NamedQuery(name = "HoatDong.findByDiem", query = "SELECT h FROM HoatDong h WHERE h.diem = :diem")})
+    @NamedQuery(name = "HoatDong.findByDiem", query = "SELECT h FROM HoatDong h WHERE h.diem = :diem"),
+    @NamedQuery(name = "HoatDong.findByPhi", query = "SELECT h FROM HoatDong h WHERE h.phi = :phi")})
 public class HoatDong implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -47,18 +50,22 @@ public class HoatDong implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Size(min = 10, max = 200,message = "{hoatdong.ten.nullErr}")
+    @Size(max = 200)
     @Column(name = "ten")
+    @NotEmpty(message = "Tên không được để trống")
     private String ten;
     @Size(max = 400)
     @Column(name = "mo_ta")
     private String moTa;
     @Basic(optional = false)
     @NotNull
-    @Min(value = 5, message = "{hoatdong.diem.sizeErr}")
-    @Max(value = 10, message = "{hoatdong.diem.sizeErr}")
+    @Max(value = 10,message = "{hoatdong.diem.sizeErr}")
+    @Min(value = 3,message = "{hoatdong.diem.sizeErr}")
+
     @Column(name = "diem")
     private int diem;
+    @Column(name = "phi")
+    private Long phi;
     @JoinColumn(name = "dieu_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Dieu dieuId;
@@ -72,8 +79,12 @@ public class HoatDong implements Serializable {
     @ManyToOne(optional = false)
     private TroLySinhVien troLyId;
     @OneToMany(mappedBy = "hoatDongId")
+    @JsonIgnore
+
     private Set<BaiViet> baiVietSet;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "hoatDongId")
+    @JsonIgnore
+
     private Set<SinhVienHoatDong> sinhVienHoatDongSet;
 
     public HoatDong() {
@@ -118,6 +129,14 @@ public class HoatDong implements Serializable {
 
     public void setDiem(int diem) {
         this.diem = diem;
+    }
+
+    public Long getPhi() {
+        return phi;
+    }
+
+    public void setPhi(Long phi) {
+        this.phi = phi;
     }
 
     public Dieu getDieuId() {

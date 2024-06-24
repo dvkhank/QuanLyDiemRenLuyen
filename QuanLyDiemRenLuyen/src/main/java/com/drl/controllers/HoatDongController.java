@@ -22,19 +22,34 @@ import org.springframework.web.bind.annotation.PostMapping;
  */
 @Controller
 public class HoatDongController {
+    
     @Autowired
     private HoatDongService hoatDongService;
-    @GetMapping("/hoatdongs")
+    
+    @GetMapping("/admin/hoatdongs")
     public String createView(Model model) {
         model.addAttribute("hoatDong", new HoatDong());
         return "hoatdongs";
     }
-    @PostMapping("/hoatdongs")
-    public String createHoatDong(@ModelAttribute (value = "hoatDong") @Valid HoatDong h,
+    
+    @PostMapping("/admin/hoatdongs")
+    public String createHoatDong(@ModelAttribute(value = "hoatDong") @Valid HoatDong h,
             BindingResult rs) { //1. ModelAttribute có 2 công dụng : + 1 là xài chung, 2 là gửi backing beans    Sau đó đóng gói lại đối tượng HoatDong h(Desireilizer)
         //Tất cả lõi sẽ hiện ở BindingResult rs
-        if(!rs.hasErrors()) {
+        if (!rs.hasErrors()) {
             try {
+                System.out.println(h.getId());
+                System.out.println(h.getTen());
+                System.out.println(h.getMoTa());
+                
+                System.out.println(h.getDiem());
+                System.out.println(h.getDieuId());
+                System.out.println(h.getHocKiNamHocId());
+                System.out.println(h.getKhoaId());
+                
+                
+                System.out.print(h.getTroLyId());
+                
                 this.hoatDongService.addOrUpdate(h);
                 return "redirect:/";
             } catch (Exception e) {
@@ -45,10 +60,10 @@ public class HoatDongController {
         return "hoatdongs";
     }
     
-    @GetMapping("/hoatdongs/{hoatdongId}")
-    public String updateView (Model model,@PathVariable(value = "hoatdongId")int id) {
-        model.addAttribute("hoatDong",        this.hoatDongService.getHoatDongByIDd(id));
+    @GetMapping("/admin/hoatdongs/{hoatdongId}")
+    public String updateView(Model model, @PathVariable(value = "hoatdongId") int id) {
+        model.addAttribute("hoatDong", this.hoatDongService.getHoatDongByIDd(id));
         return "hoatdongs";
-
+        
     }
 }

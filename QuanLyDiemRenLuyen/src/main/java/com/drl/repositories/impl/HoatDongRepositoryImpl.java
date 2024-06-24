@@ -5,6 +5,7 @@
 package com.drl.repositories.impl;
 
 import com.drl.pojo.HoatDong;
+import com.drl.pojo.SinhVienHoatDong;
 import com.drl.repositories.HoatDongRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +38,7 @@ public class HoatDongRepositoryImpl implements HoatDongRepository {
     @Autowired
     private LocalSessionFactoryBean factory;
 
+    @Override
     public List<HoatDong> getHoatDongs(Map<String, String> params) {
         Session s = this.factory.getObject().openSession();
         CriteriaBuilder b = s.getCriteriaBuilder();//Muốn lấy điều kiện
@@ -55,6 +57,11 @@ public class HoatDongRepositoryImpl implements HoatDongRepository {
             predicates.add(b.equal(r.get("dieuId"), Integer.parseInt(dieuId)));
         }
 
+        String hocKiNamHocId = params.get("hocKiNamHocId");
+        if (hocKiNamHocId != null && !hocKiNamHocId.isEmpty()) {
+            predicates.add(b.equal(r.get("hocKiNamHocId"), Integer.parseInt(hocKiNamHocId)));
+        }
+
         q.where(predicates.toArray(Predicate[]::new));
 
         q.orderBy(b.desc(r.get("id")));
@@ -67,13 +74,15 @@ public class HoatDongRepositoryImpl implements HoatDongRepository {
             query.setFirstResult(start);
             query.setMaxResults(pageSize);
         }
+
         List<HoatDong> hoatDongs = query.getResultList();
         return hoatDongs;
     }
 
+    @Override
     public void addOrUpdate(HoatDong h) {
         Session s = this.factory.getObject().getCurrentSession();
-        if (h.getId() > 0) {
+        if (h.getId() != null) {
             s.update(h);
         } else {
             s.save(h);
@@ -89,7 +98,46 @@ public class HoatDongRepositoryImpl implements HoatDongRepository {
     @Override
     public void deleteHoatDong(int id) {
         Session s = this.factory.getObject().getCurrentSession();
+        Query query = s.createQuery("FROM SinhVienHoatDong WHERE hoatDongId.id = :id");
+        query.setParameter("id", id);
+        List<SinhVienHoatDong> rs = query.getResultList();
+        for (SinhVienHoatDong svhd : rs) {
+            s.delete(svhd);
+        }
+
         HoatDong h = this.getHoatDongByIDd(id);
+        System.out.print(h);
+
         s.delete(h);
+    }
+
+    @Override
+    public List<HoatDong> getAllHoatDongs() {
+        Session s = this.factory.getObject().getCurrentSession();
+        Query query = s.createNamedQuery("HoatDong.findAll");
+        return query.getResultList();
+
+    }
+
+    public List<Object[]> getAllHoatDongTheoSinhVien(int hocki, int sinhvien) {
+        Session s = this.factory.getObject().getCurrentSession();
+        Query query = s.createQuery("SELECT svhd.hoatDongId, svhd.trangThai FROM SinhVienHoatDong svhd WHERE svhd.sinhVienId.id = :sinhvien AND svhd.hoatDongId.hocKiNamHocId.id = :hocki ");
+        query.setParameter("sinhvien", sinhvien);
+        query.setParameter("hocki", hocki);
+        return query.getResultList();
+    }
+
+    public List<HoatDong> getHoatDongDangKy(int hocki, int sinhvien) {
+        Session s = this.factory.getObject().getCurrentSession();
+        Query query = s.createQuery("FROM HoatDong h WHERE h.hocKiNamHocId.id =:hocki AND (h.id NOT IN (SELECT svhd.hoatDongId.id FROM SinhVienHoatDong svhd WHERE svhd.sinhVienId.id = :sinhvien AND svhd.hoatDongId.hocKiNamHocId.id = :hocki ))");
+        query.setParameter("sinhvien", sinhvien);
+        query.setParameter("hocki", hocki);
+        return query.getResultList();
+    }
+
+    public SinhVienHoatDong taoDangKySuKien(SinhVienHoatDong svhd) {
+        Session s = this.factory.getObject().getCurrentSession();
+        s.save(svhd);
+        return svhd;
     }
 }

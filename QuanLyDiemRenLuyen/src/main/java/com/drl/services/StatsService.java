@@ -12,4 +12,7 @@ import java.util.List;
  */
 public interface StatsService {
      List<Object[]> statsDiemRenLuyenTheoKhoa();
+     List<Object[]> statsDiemRenLuyenTheoThanhTichVaTheoKhoa(int min, int max,int hocKi, int namHoc);
+     List<Object[]> statsDiemRenLuyenTheoThanhTichVaTheoLop(int min, int max, int hocKi, int namHoc, int khoaId);
+      List<Object[]> statsDiemRenLuyenTheoThanhTich(int min, int max, int hocKi, int namHoc, int lopId);
 }

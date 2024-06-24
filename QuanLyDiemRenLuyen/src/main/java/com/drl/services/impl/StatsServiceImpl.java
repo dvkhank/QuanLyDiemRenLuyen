@@ -26,4 +26,20 @@ public class StatsServiceImpl implements StatsService {
 
     }
 
+    @Override
+    public List<Object[]> statsDiemRenLuyenTheoThanhTichVaTheoKhoa(int min, int max,int hocKi, int namHoc) {
+        return this.statsRepo.statsDiemRenLuyenTheoThanhTichVaTheoKhoa(min, max, hocKi, namHoc);
+        
+    }
+
+    @Override
+    public List<Object[]> statsDiemRenLuyenTheoThanhTichVaTheoLop(int min, int max, int hocKi, int namHoc, int khoaId) {
+        return this.statsRepo.statsDiemRenLuyenTheoThanhTichVaTheoLop(min, max, hocKi, namHoc, khoaId);
+    }
+
+    @Override
+    public List<Object[]> statsDiemRenLuyenTheoThanhTich(int min, int max, int hocKi, int namHoc, int lopId) {
+        return this.statsRepo.statsDiemRenLuyenTheoThanhTich(min, max, hocKi, namHoc, lopId);
+    }
+
 }

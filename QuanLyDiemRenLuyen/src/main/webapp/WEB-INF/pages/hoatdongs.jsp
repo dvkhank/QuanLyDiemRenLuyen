@@ -9,7 +9,7 @@
 <%@taglib  prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <h1 class="text-center text-info mt-1">Quản Lý Hoạt Động</h1>
-<c:url value="/hoatdongs" var="actions" />
+<c:url value="/admin/hoatdongs" var="actions" />
 <form:form action="${actions}" modelAttribute="hoatDong" method="post">
     <form:errors path="*" element="div" cssClass="alert alert-danger"></form:errors>
         <div class="form-floating mb-3 mt-3">
@@ -70,10 +70,10 @@
         <label for="hocKiNamHocId" class="form-label">Khoa phụ trách</label>
     </div>
     <div class="form-floating mb-3 mt-3">
-        <form:select class="form-select" id="troLyId" path="troLyId">
+        <form:select class="form-select" id="troLyId" path="troLyId.id">
             <c:forEach items="${troLys}" var="c">
                 <c:choose>
-                    <c:when test="${c.id==hoatDong.troLyId.nguoiDung.id}">
+                    <c:when test="${c.id==hoatDong.troLyId.id}">
                         <option value="${c.id}" selected>${c.nguoiDung.getHo()} ${c.nguoiDung.getTen()}</option>
                     </c:when>
                     <c:otherwise>
@@ -83,7 +83,12 @@
             </c:forEach>
         </form:select>
         <label for="troLyId" class="form-label">Trợ lý</label>
-    </div> 
+    </div>
+
+    <div class="form-floating mb-3 mt-3">
+        <form:input type="text" class="form-control" id="phi" placeholder="$" path="phi" />
+        <label for="diem">Phí</label>
+    </div>
     <div class="form-floating mb-3 mt-3">
         <button class="btn btn-info" type="submit">
             <c:choose>

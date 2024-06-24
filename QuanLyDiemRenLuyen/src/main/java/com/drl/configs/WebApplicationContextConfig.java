@@ -5,9 +5,12 @@
 package com.drl.configs;
 
 import com.drl.formatters.DieuFormatter;
+import com.drl.formatters.HoatDongFormatter;
 import com.drl.formatters.HocKiNamHocFormatter;
 import com.drl.formatters.KhoaFormatter;
+import com.drl.formatters.NguoiDungFormatter;
 import com.drl.formatters.TroLySinhVienFormatter;
+import java.util.Locale;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -17,10 +20,14 @@ import org.springframework.format.FormatterRegistry;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
+import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 /**
  *
@@ -34,13 +41,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
     "com.drl.repositories",
     "com.drl.services"
 })
-public class WebApplicationContextConfig implements WebMvcConfigurer{
+public class WebApplicationContextConfig implements WebMvcConfigurer {
 
     @Override
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
         configurer.enable();
     }
-    
+
 //    @Bean
 //    public InternalResourceViewResolver internalResourceViewResolver() {
 //        InternalResourceViewResolver r = new InternalResourceViewResolver();
@@ -48,17 +55,16 @@ public class WebApplicationContextConfig implements WebMvcConfigurer{
 //        r.setSuffix(".jsp");
 //        return r;
 //    }
-        @Override
+    @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/images/**").addResourceLocations("/resources/images/");
         registry.addResourceHandler("/js/**").addResourceLocations("/resources/js/");
     }
-    
-        @Override
+
+    @Override
     public Validator getValidator() {
         return validator();
     }
-    
 
     @Bean
     public MessageSource messageSource() {//Chỉ cho vị trí đọc file properties
@@ -74,13 +80,42 @@ public class WebApplicationContextConfig implements WebMvcConfigurer{
         bean.setValidationMessageSource(messageSource());//Truyền file để đọc
         return bean;
     }
-    
-        @Override
+
+    @Override
     public void addFormatters(FormatterRegistry registry) {
         registry.addFormatter(new KhoaFormatter());
         registry.addFormatter(new DieuFormatter());
         registry.addFormatter(new HocKiNamHocFormatter());
         registry.addFormatter(new TroLySinhVienFormatter());
+        registry.addFormatter(new NguoiDungFormatter());
+        registry.addFormatter(new HoatDongFormatter());
+    }
+
+    @Bean
+    public CommonsMultipartResolver multipartResolver() {
+        CommonsMultipartResolver resolver
+                = new CommonsMultipartResolver();
+        resolver.setDefaultEncoding("UTF-8");
+        return resolver;
+    }
+        @Bean
+    public SessionLocaleResolver localeResolver() {
+        SessionLocaleResolver localeResolver = new SessionLocaleResolver();
+        localeResolver.setDefaultLocale(Locale.ENGLISH); // Ngôn ngữ mặc định
+        return localeResolver;
+    }
+
+    @Bean
+    public LocaleChangeInterceptor localeChangeInterceptor() {
+        LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
+        localeChangeInterceptor.setParamName("lang"); // Tham số trên URL để thay đổi ngôn ngữ
+        return localeChangeInterceptor;
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(localeChangeInterceptor());
     }
     
+
 }
