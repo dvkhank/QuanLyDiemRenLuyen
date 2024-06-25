@@ -23,13 +23,10 @@
             <form:input type="text" class="form-control" id="ten" name="ten" placeholder="Nhập tên" path="ten"/>
         </div>
         <div class="form-group">
-            <label for="ngayTao">${createdDate}</label>
-            <form:input type="text" class="form-control" id="ngayTao" name="ngayTao" path="ngayTao" placeholder="YYYY-MM-DD" />
-        </div>
-        <div class="form-group">
             <label for="noiDung">${content}</label>
             <form:textarea class="form-control" id="noiDung" name="noiDung" rows="5" placeholder="Nhập nội dung" path="noiDung" />
         </div>
+        
         <div class="form-group">
             <label for="hoatDongId">${activity} :</label>
             <form:select class="form-select" path="hoatDongId">

@@ -116,6 +116,11 @@ public class IndexController {
         String staticsticbyfaculty = messageSource.getMessage("staticsticbyfaculty", null, locale);
         String staticsticbyclass = messageSource.getMessage("staticsticbyclass", null, locale);
         String xuat = messageSource.getMessage("xuat", null, locale);
+        String fee = messageSource.getMessage("fee", null, locale);
+        String owner = messageSource.getMessage("owner", null, locale);
+        String trungbinh = messageSource.getMessage("trungbinh", null, locale);
+        String yeu = messageSource.getMessage("yeu", null, locale);
+        String kem = messageSource.getMessage("kem", null, locale);
 
         
         model.addAttribute("greetingMessage", greetingMessage);
@@ -154,6 +159,11 @@ public class IndexController {
         model.addAttribute("staticsticbyfaculty", staticsticbyfaculty);
         model.addAttribute("staticsticbyclass", staticsticbyclass);
         model.addAttribute("xuat", xuat);
+        model.addAttribute("fee", fee);
+        model.addAttribute("owner", owner);
+        model.addAttribute("trungbinh", trungbinh);
+        model.addAttribute("yeu", yeu);
+        model.addAttribute("kem", kem);
 
 
 

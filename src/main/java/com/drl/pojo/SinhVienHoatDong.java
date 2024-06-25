@@ -4,6 +4,7 @@
  */
 package com.drl.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.Basic;
@@ -50,6 +51,7 @@ public class SinhVienHoatDong implements Serializable {
     @ManyToOne(optional = false)
     private SinhVien sinhVienId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "sinhVienHoatDongId")
+    @JsonIgnore
     private Set<BaoThieu> baoThieuSet;
 
     public SinhVienHoatDong() {
@@ -92,6 +94,7 @@ public class SinhVienHoatDong implements Serializable {
     }
 
     @XmlTransient
+    @JsonIgnore
     public Set<BaoThieu> getBaoThieuSet() {
         return baoThieuSet;
     }

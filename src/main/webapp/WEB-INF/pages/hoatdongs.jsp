@@ -83,7 +83,12 @@
             </c:forEach>
         </form:select>
         <label for="troLyId" class="form-label">Trợ lý</label>
-    </div> 
+    </div>
+
+    <div class="form-floating mb-3 mt-3">
+        <form:input type="text" class="form-control" id="phi" placeholder="$" path="phi" />
+        <label for="diem">Phí</label>
+    </div>
     <div class="form-floating mb-3 mt-3">
         <button class="btn btn-info" type="submit">
             <c:choose>

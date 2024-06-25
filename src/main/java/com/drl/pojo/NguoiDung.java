@@ -4,6 +4,7 @@
  */
 package com.drl.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
@@ -23,6 +24,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -59,11 +61,11 @@ public class NguoiDung implements Serializable {
     private Integer id;
     @Size(max = 45)
     @Column(name = "ho")
-    @NotNull(message = "{hoatdong.ten.minMax}")
+    @NotEmpty(message = "{hoatdong.ho.nullErr}")
     private String ho;
     @Size(max = 45)
     @Column(name = "ten")
-    @NotNull(message = "{hoatdong.ten.minMax}")
+    @NotEmpty(message = "{hoatdong.ten.nullErr}")
     private String ten;
     @Column(name = "nam_sinh")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -76,27 +78,36 @@ public class NguoiDung implements Serializable {
     private String avatar;
     // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Size(max = 45)
-    @Column(name = "email", unique = true )
+    @Column(name = "email", unique = true)
     @Email(message = "{email.error}" )
+    @NotEmpty(message = "{email.notnull}")
     private String email;
     @Size(max = 200)
     @Column(name = "password")
+    @NotEmpty(message = "{password.notnull}")
     private String password;
     @Size(max = 45)
     @Column(name = "user_role")
     private String userRole;
     @Size(max = 45)
     @Column(name = "username", unique = true)
+    @NotEmpty(message = "{username.notnull}")
     private String username;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "nguoiDung")
+    @JsonIgnore
     private ChuyenVienCtsv chuyenVienCtsv;
+    @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "nguoiDung")
     private TroLySinhVien troLySinhVien;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "nguoiDungId")
+    @JsonIgnore
     private Set<Comment> commentSet;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "nguoiDung")
+    @JsonIgnore
     private SinhVien sinhVien;
     @Transient
+    @JsonIgnore
+    @XmlTransient
     private MultipartFile file;
     public NguoiDung() {
     }

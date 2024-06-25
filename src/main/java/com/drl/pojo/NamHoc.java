@@ -4,6 +4,7 @@
  */
 package com.drl.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.Basic;
@@ -43,8 +44,10 @@ public class NamHoc implements Serializable {
     @Column(name = "nam_hoc")
     private int namHoc;
     @OneToMany(mappedBy = "namHocId")
+    @JsonIgnore
     private Set<HocKiNamHoc> hocKiNamHocSet;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "namHocId")
+    @JsonIgnore
     private Set<SinhVien> sinhVienSet;
 
     public NamHoc() {
@@ -117,5 +120,5 @@ public class NamHoc implements Serializable {
     public String toString() {
         return "com.drl.pojo.NamHoc[ id=" + id + " ]";
     }
-    
+
 }

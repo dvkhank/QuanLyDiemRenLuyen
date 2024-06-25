@@ -58,5 +58,9 @@ public class NguoiDungRepositoryImpl implements NguoiDungRepository {
         s.save(nd);
 
     }
+    public boolean authNguoiDung(String username, String pasword) {
+        NguoiDung n  = this.getNguoiDungByUsername(username);
+        return this.encoder.matches(pasword, n.getPassword());
+    }
 
 }

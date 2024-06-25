@@ -6,6 +6,8 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="sec"
+           uri="http://www.springframework.org/security/tags" %> 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <!DOCTYPE html>
@@ -42,119 +44,122 @@
         </table>
     </div>
 </div>
-<hr>
-<h3 id="statsbytruong" class="text-center text-info">${statisticbydepartment}</h3>
-<div class="row">
-    <div class="col-md-5 col-12">
-        <form>
-            <div class="form-floating">
-                <select class="form-select" id="THANHTHICH" name="thanhtich">
-                    <option value="XUATSAC" >${excellent}</option>
-                    <option value="GIOI">${verygood}</option>
-                    <option value="KHA" >${good}</option>
-                </select>
-                <label for="THANHTHICH" class="form-label">${choose} ${achievement}</label>
-            </div>
-            <div class="form-floating">
-                <select class="form-select" id="namHoc-khoa" name="namHoc">
-                    <c:forEach items="${namHocs}" var="c">
-                        <option value="${c.namHoc}" >${c.namHoc}</option>
-                    </c:forEach>
-                </select>
-                <label for="namHoc-khoa" class="form-label">${choose} ${year}</label>
-            </div>
-            <div class="form-floating">
-                <select class="form-select" id="hocKi-khoa" name="hocKi">
-                    <c:forEach items="${hocKis}" var="c">
-                        <option value="${c.hocKi}" >${c.hocKi}</option>
-                    </c:forEach>
-                </select>
-                <label for="hocKi-khoa" class="form-label">${choose} ${semester}</label>
-            </div>
-            <div class="form-floating mb-3 mt-3">
-                <button class='btn btn-success'>${filter}</button>
-            </div>
-        </form>
-        <table class="table" id="data-table1"> 
-            <tr>
-                <th>${department}</th>
-                <th>${number}</th>
-            </tr>
-            <c:forEach items="${statsTheoThanhTichVaTheoKhoa}" var="c">
+<sec:authorize access="hasRole('ROLE_ADMIN')">
+
+    <hr>
+    <h3 id="statsbytruong" class="text-center text-info">${statisticbydepartment}</h3>
+    <div class="row">
+        <div class="col-md-5 col-12">
+            <form>
+                <div class="form-floating">
+                    <select class="form-select" id="THANHTHICH" name="thanhtich">
+                        <option value="XUATSAC" >${excellent}</option>
+                        <option value="GIOI">${verygood}</option>
+                        <option value="KHA" >${good}</option>
+                    </select>
+                    <label for="THANHTHICH" class="form-label">${choose} ${achievement}</label>
+                </div>
+                <div class="form-floating">
+                    <select class="form-select" id="namHoc-khoa" name="namHoc">
+                        <c:forEach items="${namHocs}" var="c">
+                            <option value="${c.namHoc}" >${c.namHoc}</option>
+                        </c:forEach>
+                    </select>
+                    <label for="namHoc-khoa" class="form-label">${choose} ${year}</label>
+                </div>
+                <div class="form-floating">
+                    <select class="form-select" id="hocKi-khoa" name="hocKi">
+                        <c:forEach items="${hocKis}" var="c">
+                            <option value="${c.hocKi}" >${c.hocKi}</option>
+                        </c:forEach>
+                    </select>
+                    <label for="hocKi-khoa" class="form-label">${choose} ${semester}</label>
+                </div>
+                <div class="form-floating mb-3 mt-3">
+                    <button class='btn btn-success'>${filter}</button>
+                </div>
+            </form>
+            <table class="table" id="data-table1"> 
                 <tr>
-                    <td>${c[0]}</td>
-                    <td>${c[1]}</td>
+                    <th>${department}</th>
+                    <th>${number}</th>
                 </tr>
-            </c:forEach>
-        </table>
+                <c:forEach items="${statsTheoThanhTichVaTheoKhoa}" var="c">
+                    <tr>
+                        <td>${c[0]}</td>
+                        <td>${c[1]}</td>
+                    </tr>
+                </c:forEach>
+            </table>
+        </div>
+        <div class="col-md-7 col-12">
+            <canvas id="myChart"></canvas>
+        </div>
     </div>
-    <div class="col-md-7 col-12">
-        <canvas id="myChart"></canvas>
-    </div>
-</div>
-            <button class="btn btn-success mb-3" onclick="convertToImageAndGeneratePDF1()">${xuat} PDF</button>
+    <button class="btn btn-success mb-3" onclick="convertToImageAndGeneratePDF1()">${xuat} PDF</button>
 
-<hr>
-<h3 id="statsbykhoa" class="text-center text-info">${staticsticbyfaculty}</h3>
-<div class="row">
-    <div class="col-md-5 col-12">
-        <form>
-            <div class="form-floating">
-                <select class="form-select" id="khoa-khoa" name="khoaId">
-                    <c:forEach items="${khoas}" var="c">
-                        <option value="${c.id}" >${c.ten}</option>
-                    </c:forEach>
-                </select>
-                <label for="khoa-khoa" class="form-label">${choose} ${department}</label>
-            </div>
+    <hr>
+    <h3 id="statsbykhoa" class="text-center text-info">${staticsticbyfaculty}</h3>
+    <div class="row">
+        <div class="col-md-5 col-12">
+            <form>
+                <div class="form-floating">
+                    <select class="form-select" id="khoa-khoa" name="khoaId">
+                        <c:forEach items="${khoas}" var="c">
+                            <option value="${c.id}" >${c.ten}</option>
+                        </c:forEach>
+                    </select>
+                    <label for="khoa-khoa" class="form-label">${choose} ${department}</label>
+                </div>
 
 
-            <div class="form-floating">
-                <select class="form-select" id="THANHTHICH-LOP" name="thanhtich">
-                    <option value="XUATSAC" >${excellent}</option>
-                    <option value="GIOI">${verygood}</option>
-                    <option value="KHA" >${good}</option>
-                </select>
-                <label for="THANHTHICH-LOP" class="form-label">${choose} ${achievement}</label>
-            </div>
-            <div class="form-floating">
-                <select class="form-select" id="namHoc-lop" name="namHoc">
-                    <c:forEach items="${namHocs}" var="c">
-                        <option value="${c.namHoc}" >${c.namHoc}</option>
-                    </c:forEach>
-                </select>
-                <label for="namHoc-lop" class="form-label">${choose} ${year}</label>
-            </div>
-            <div class="form-floating">
-                <select class="form-select" id="hocKi-lop" name="hocKi">
-                    <c:forEach items="${hocKis}" var="c">
-                        <option value="${c.hocKi}" >${c.hocKi}</option>
-                    </c:forEach>
-                </select>
-                <label for="hocKi-lop" class="form-label">${choose} ${semester}</label>
-            </div>
-            <div class="form-floating mb-3 mt-3">
-                <button class='btn btn-success'>${filter}</button>
-            </div>
-        </form>
-        <table class="table" id="data-table2">
-            <tr>
-                <th>${lop}</th>
-                <th>${number}</th>
-            </tr>
-            <c:forEach items="${statsTheoThanhTichVaTheoLop}" var="c">
+                <div class="form-floating">
+                    <select class="form-select" id="THANHTHICH-LOP" name="thanhtich">
+                        <option value="XUATSAC" >${excellent}</option>
+                        <option value="GIOI">${verygood}</option>
+                        <option value="KHA" >${good}</option>
+                    </select>
+                    <label for="THANHTHICH-LOP" class="form-label">${choose} ${achievement}</label>
+                </div>
+                <div class="form-floating">
+                    <select class="form-select" id="namHoc-lop" name="namHoc">
+                        <c:forEach items="${namHocs}" var="c">
+                            <option value="${c.namHoc}" >${c.namHoc}</option>
+                        </c:forEach>
+                    </select>
+                    <label for="namHoc-lop" class="form-label">${choose} ${year}</label>
+                </div>
+                <div class="form-floating">
+                    <select class="form-select" id="hocKi-lop" name="hocKi">
+                        <c:forEach items="${hocKis}" var="c">
+                            <option value="${c.hocKi}" >${c.hocKi}</option>
+                        </c:forEach>
+                    </select>
+                    <label for="hocKi-lop" class="form-label">${choose} ${semester}</label>
+                </div>
+                <div class="form-floating mb-3 mt-3">
+                    <button class='btn btn-success'>${filter}</button>
+                </div>
+            </form>
+            <table class="table" id="data-table2">
                 <tr>
-                    <td>${c[0]}</td>
-                    <td>${c[1]}</td>
+                    <th>${lop}</th>
+                    <th>${number}</th>
                 </tr>
-            </c:forEach>
-        </table>
+                <c:forEach items="${statsTheoThanhTichVaTheoLop}" var="c">
+                    <tr>
+                        <td>${c[0]}</td>
+                        <td>${c[1]}</td>
+                    </tr>
+                </c:forEach>
+            </table>
+        </div>
+        <div class="col-md-7 col-12">
+            <canvas id="myChart2"></canvas>
+        </div>
     </div>
-    <div class="col-md-7 col-12">
-        <canvas id="myChart2"></canvas>
-    </div>
-</div>
-<button class="btn btn-success mb-3" onclick="convertToImageAndGeneratePDF2()">${xuat} PDF</button>
+    <button class="btn btn-success mb-3" onclick="convertToImageAndGeneratePDF2()">${xuat} PDF</button>
+</sec:authorize>
 
 
 <h3 id="statsbylop" class="text-center text-info">${staticsticbyclass}</h3>
@@ -258,7 +263,7 @@
 
 
     };
-        async function convertToImageAndGeneratePDF1() {
+    async function convertToImageAndGeneratePDF1() {
         const {jsPDF} = window.jspdf;
 
         const pdf = new jsPDF();
@@ -289,15 +294,15 @@
         // Lưu PDF
         pdf.save('report.pdf');
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+
     async function convertToImageAndGeneratePDF2() {
         const {jsPDF} = window.jspdf;
 
@@ -321,10 +326,10 @@
         pdf.addImage(headerImage, 'PNG', 10, 10, 180, headerCanvas.height * 180 / headerCanvas.width);
 
         // Thêm hình ảnh bảng vào PDF
-        pdf.addImage(tableImage, 'PNG', 10, headerCanvas.height , 180, tableCanvas.height * 180 / tableCanvas.width);
+        pdf.addImage(tableImage, 'PNG', 10, headerCanvas.height, 180, tableCanvas.height * 180 / tableCanvas.width);
 
         // Thêm trang mới cho biểu đồ và thêm hình ảnh biểu đồ vào PDF
-pdf.addImage(chartImage, 'PNG', 10, tableCanvas.height, 180, chartCanvas.height * (180 / chartCanvas.width));
+        pdf.addImage(chartImage, 'PNG', 10, tableCanvas.height, 180, chartCanvas.height * (180 / chartCanvas.width));
 
         // Lưu PDF
         pdf.save('report.pdf');

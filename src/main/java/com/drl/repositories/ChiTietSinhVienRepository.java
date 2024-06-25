@@ -4,6 +4,7 @@
  */
 package com.drl.repositories;
 
+import com.drl.pojo.SinhVienHoatDong;
 import java.util.List;
 
 /**
@@ -33,5 +34,8 @@ public interface ChiTietSinhVienRepository {
     List<Object[]> getTongDiemTheoDieu4(int sinhVienId, int hocKiNamHocId);
 
     List<Object[]> getTongDiemTheoDieu5(int sinhVienId, int hocKiNamHocId);
+    public List<Object[]> getTongDiemTheoDieu(int sinhVienId, int hocKiNamHocId, int dieu);
+    public List<Object[]> laydanhsachbaothieu(int hockiId, int sinhvienId, int dieuId);
+    public void taoBaoThieu(SinhVienHoatDong svhd);
 
 }

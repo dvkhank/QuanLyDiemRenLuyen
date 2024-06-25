@@ -29,7 +29,7 @@
         <label for="ten">Tên trợ lý</label>
     </div>
     <div class="form-floating mb-3 mt-3">
-        <form:input type="text" class="form-control" id="namsinh" placeholder="YYYY-MM-DD" path="namSinh" />
+        <form:input type="text" class="form-control" id="namsinh" placeholder="YYYY-MM-DD" path="namSinh"  />
         <label for="namsinh">Ngày sinh</label>
     </div>
     <div class="form-floating mb-3 mt-3">

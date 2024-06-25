@@ -8,7 +8,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <c:set var="tongDiem" value="0" />
-<div class="row">
+<div class="row" id="information-sv">
     <h1 class="text-center text-info mt-3">THÔNG TIN CHI TIẾT CỦA SINH VIÊN</h1>
     <div class="col-mt-5 col-12 mt-3">
         <table class="table">
@@ -54,10 +54,10 @@
                 <label for="hockinamhoc" class="form-label">CHỌN HỌC KÌ - NĂM HỌC</label>
             </div>
             <div class="form-floating mb-3 mt-3">
-                <button class='btn btn-success'>Xem</button>
+                <button class='btn btn-success'>${filter}</button>
             </div>
         </form>
-        <table class="table">
+        <table class="table" id="points-sv">
             <thead class="table-success">
                 <tr>
                     <th>Minh Chứng</th>
@@ -168,7 +168,55 @@
                 </tr>
 
 
+
             </tbody>
         </table>
+        <button class="btn btn-success mb-3" onclick="convertToImageAndGeneratePDF1()">${xuat} PDF</button>
+
     </div>
 </div>
+<script>
+    async function convertToImageAndGeneratePDF1() {
+        const {jsPDF} = window.jspdf;
+
+        const pdf = new jsPDF();
+        const informationsv = document.getElementById('information-sv');
+        const pointsv = document.getElementById('points-sv');
+
+        try {
+            // Chụp phần thông tin
+            const infoCanvas = await html2canvas(informationsv);
+            const infoImage = infoCanvas.toDataURL('image/png');
+            const infoImageProps = pdf.getImageProperties(infoImage);
+            const infoImageHeight = (infoImageProps.height * 180) / infoImageProps.width;
+
+            pdf.addImage(infoImage, 'PNG', 10, 10, 180, infoImageHeight);
+
+            // Chụp phần điểm
+            const pointCanvas = await html2canvas(pointsv);
+            const pointImage = pointCanvas.toDataURL('image/png');
+            const pointImageProps = pdf.getImageProperties(pointImage);
+            const pointImageHeight = (pointImageProps.height * 180) / pointImageProps.width;
+
+            let yOffset = infoImageHeight + 20;
+
+            // Thêm trang mới nếu hình ảnh bảng không vừa trang hiện tại
+            if (yOffset + pointImageHeight > pdf.internal.pageSize.height - 10) {
+                pdf.addPage();
+                yOffset = 10;
+            }
+
+            // Thêm hình ảnh bảng vào PDF
+            pdf.addImage(pointImage, 'PNG', 10, yOffset, 180, pointImageHeight);
+
+            // Lưu PDF
+            pdf.save('report.pdf');
+        } catch (error) {
+            console.error('Error generating PDF:', error);
+        }
+    }
+</script>
+
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>

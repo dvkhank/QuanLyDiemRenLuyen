@@ -4,13 +4,19 @@
  */
 package com.drl.controllers;
 
+import com.drl.pojo.HoatDong;
+import com.drl.pojo.SinhVienHoatDong;
 import com.drl.services.HoatDongService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -18,15 +24,31 @@ import org.springframework.web.bind.annotation.RestController;
  * @author DELL
  */
 @RestController
+@RequestMapping("/api")
 public class ApiHoatDongController {
-
-    @Autowired
+        @Autowired
     private HoatDongService hoatDongService;
-
-    @DeleteMapping("/hoatdongs/{hoatdongId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateView(Model model, @PathVariable(value = "hoatdongId") int id) {
-        this.hoatDongService.deleteHoatDong(id);
-
+    @GetMapping("/hoatdongs/")
+    @CrossOrigin
+    public ResponseEntity<List<Object[]>> list(@RequestParam("hocki") int hocki, @RequestParam("sinhvien") int sinhvien) {
+        return new ResponseEntity<>(this.hoatDongService.getAllHoatDongTheoSinhVien(hocki, sinhvien), HttpStatus.OK);
     }
+    
+    @GetMapping("/hoatdongs/chuadangky")
+    @CrossOrigin
+    public ResponseEntity<List<HoatDong>> listDsChuaDky(@RequestParam("hocki") int hocki, @RequestParam("sinhvien") int sinhvien) {
+        return new ResponseEntity<>(this.hoatDongService.getHoatDongDangKy(hocki, sinhvien), HttpStatus.OK);
+    }
+    
+    @PostMapping("/hoatdongs/")
+    @CrossOrigin
+    public ResponseEntity<SinhVienHoatDong> createSinhVienHoatDong(@RequestBody SinhVienHoatDong svhd) {
+        try {
+            SinhVienHoatDong newHoatDong = hoatDongService.taoDangKySuKien(svhd);
+            return new ResponseEntity<>(newHoatDong, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
 }

@@ -81,5 +81,11 @@ public class NguoiDungServiceImpl implements NguoiDungService{
         }
         this.nguoiDungRepo.addNguoiDung(nd);
     }
+
+    @Override
+    public boolean authNguoiDung(String username, String pasword) {
+        return this.nguoiDungRepo.authNguoiDung(username, pasword);
+    }
+    
     
 }

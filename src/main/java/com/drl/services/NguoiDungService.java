@@ -15,4 +15,5 @@ public interface NguoiDungService extends UserDetailsService{
     NguoiDung getNguoiDungByUsername(String username);
     void addTroLy(NguoiDung nd, int khoaId);
     void addNguoiDung(NguoiDung nd);
+    public boolean authNguoiDung(String username, String pasword);
 }

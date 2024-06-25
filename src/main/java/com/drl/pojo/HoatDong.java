@@ -4,6 +4,7 @@
  */
 package com.drl.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.Basic;
@@ -21,6 +22,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -50,8 +52,7 @@ public class HoatDong implements Serializable {
     private Integer id;
     @Size(max = 200)
     @Column(name = "ten")
-    @NotNull(message = "{hoatdong.ten.nullErr}")
-    @Min(value = 5, message = "{hoatdong.ten.minMax}")
+    @NotEmpty(message = "Tên không được để trống")
     private String ten;
     @Size(max = 400)
     @Column(name = "mo_ta")
@@ -78,8 +79,12 @@ public class HoatDong implements Serializable {
     @ManyToOne(optional = false)
     private TroLySinhVien troLyId;
     @OneToMany(mappedBy = "hoatDongId")
+    @JsonIgnore
+
     private Set<BaiViet> baiVietSet;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "hoatDongId")
+    @JsonIgnore
+
     private Set<SinhVienHoatDong> sinhVienHoatDongSet;
 
     public HoatDong() {

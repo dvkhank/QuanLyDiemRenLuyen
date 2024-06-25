@@ -2,6 +2,7 @@ com\drl\pojo\HoatDong_.class
 com\drl\repositories\impl\NguoiDungRepositoryImpl.class
 com\drl\configs\SpringSecurityConfig.class
 com\drl\repositories\impl\TroLySinhVienRepositoryImpl.class
+com\drl\repositories\impl\LoginClientRepositoryImpl.class
 com\drl\services\DieuService.class
 com\drl\pojo\HocKi_.class
 com\drl\pojo\Khoa.class
@@ -22,9 +23,11 @@ com\drl\repositories\impl\StatsRepositoryImpl.class
 com\drl\repositories\TroLySinhVienRepository.class
 com\drl\services\BaiVietService.class
 com\drl\controllers\IndexController.class
+com\drl\services\LoginClientService.class
 com\drl\services\impl\NguoiDungServiceImpl.class
 com\drl\controllers\StatsController.class
 com\drl\services\HocKiNamHocService.class
+com\drl\services\impl\LoginClientServiceImpl.class
 com\drl\services\impl\SinhVienHoatDongServiceImpl.class
 com\drl\services\StatsService.class
 com\drl\pojo\BaoThieu.class
@@ -46,10 +49,15 @@ com\drl\controllers\SinhVienController.class
 com\drl\controllers\ApiBaoThieuController.class
 com\drl\repositories\impl\NamHocRepositoryImpl.class
 com\drl\repositories\HocKiRepository.class
+com\drl\configs\JwtSecurityConfig.class
 com\drl\repositories\impl\BaiVietRepositoryImpl.class
+com\drl\controllers\ApiHoatDongControllerAdmin.class
 com\drl\services\impl\ChiTietSinhVienServiceImpl.class
 com\drl\pojo\BaiViet_.class
+com\drl\controllers\ApiBinhLuanController.class
 com\drl\formatters\HocKiNamHocFormatter.class
+com\drl\services\impl\BinhLuanServiceImpl.class
+com\drl\filters\RestAuthenticationEntryPoint.class
 com\drl\services\ChiTietSinhVienService.class
 com\drl\repositories\impl\SinhVienHoatDongRepositoryImpl.class
 com\drl\pojo\NamHoc.class
@@ -57,6 +65,7 @@ com\drl\services\TroLySinhVienService.class
 com\drl\repositories\impl\DieuRepositoryImpl.class
 com\drl\services\SinhVienHoatDongService.class
 com\drl\pojo\HocKi.class
+com\drl\services\BinhLuanService.class
 com\drl\pojo\BaoThieu_.class
 com\drl\repositories\HoatDongRepository.class
 com\drl\services\impl\HocKiServiceImpl.class
@@ -64,6 +73,9 @@ com\drl\services\impl\HoatDongServiceImpl.class
 com\drl\services\impl\LopServiceImpl.class
 com\drl\formatters\HoatDongFormatter.class
 com\drl\repositories\NamHocRepository.class
+com\drl\controllers\ApiNguoiDungController.class
+com\drl\filters\JwtAuthenticationTokenFilter.class
+com\drl\repositories\impl\BinhLuanRepositoryImpl.class
 com\drl\pojo\Dieu_.class
 com\drl\services\LopService.class
 com\drl\repositories\DieuRepository.class
@@ -72,6 +84,7 @@ com\drl\services\BaoThieuService.class
 com\drl\pojo\HocKiNamHoc.class
 com\drl\pojo\Lop.class
 com\drl\pojo\Comment_.class
+com\drl\controllers\ApiChiTietSinhVienController.class
 com\drl\formatters\KhoaFormatter.class
 com\drl\pojo\SinhVien_.class
 com\drl\repositories\SinhVienHoatDongRepository.class
@@ -80,6 +93,7 @@ com\drl\repositories\impl\KhoaRepositoryImpl.class
 com\drl\configs\HibernateConfig.class
 com\drl\repositories\impl\HocKiNamHocRepositoryImpl.class
 com\drl\repositories\impl\HocKiRepositoryImpl.class
+com\drl\controllers\ApiLoginSinhVien.class
 com\drl\configs\DispatcherServeletInit.class
 com\drl\repositories\impl\ChiTietSinhVienRepositoryImpl.class
 com\drl\configs\TilesConfig.class
@@ -91,6 +105,7 @@ com\drl\pojo\NamHoc_.class
 com\drl\pojo\ChuyenVienCtsv.class
 com\drl\pojo\NguoiDung.class
 com\drl\repositories\LopRepository.class
+com\drl\filters\CustomAccessDeniedHandler.class
 com\drl\pojo\Lop_.class
 com\drl\pojo\HoatDong.class
 com\drl\controllers\HoatDongController.class
@@ -103,6 +118,11 @@ com\drl\repositories\impl\BaoThieuRepositoryImpl.class
 com\drl\services\impl\HocKiNamHocServiceImpl.class
 com\drl\services\HoatDongService.class
 com\drl\repositories\KhoaRepository.class
+com\drl\repositories\BinhLuanRepository.class
+com\drl\components\JwtService.class
+com\drl\repositories\LoginClientRepository.class
 com\drl\services\NamHocService.class
 com\drl\repositories\BaoThieuRepository.class
 com\drl\configs\SecurityInit.class
+com\drl\controllers\ApiBaiVietControllerAdmin.class
+com\drl\controllers\ApiHocKiNamHocController.class

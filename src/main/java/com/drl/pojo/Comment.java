@@ -4,6 +4,7 @@
  */
 package com.drl.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
@@ -55,6 +56,7 @@ public class Comment implements Serializable {
     @ManyToOne(optional = false)
     private BaiViet baiVietId;
     @OneToMany(mappedBy = "commentId")
+    @JsonIgnore
     private Set<Comment> commentSet;
     @JoinColumn(name = "comment_id", referencedColumnName = "id")
     @ManyToOne

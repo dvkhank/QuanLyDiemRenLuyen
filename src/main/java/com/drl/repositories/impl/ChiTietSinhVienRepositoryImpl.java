@@ -4,6 +4,8 @@
  */
 package com.drl.repositories.impl;
 
+import com.drl.pojo.BaoThieu;
+import com.drl.pojo.SinhVienHoatDong;
 import com.drl.repositories.ChiTietSinhVienRepository;
 import java.util.List;
 import org.hibernate.Session;
@@ -218,5 +220,62 @@ public class ChiTietSinhVienRepositoryImpl implements ChiTietSinhVienRepository 
         return query.getResultList();
 
     }
+
+    public List<Object[]> getTongDiemTheoDieu(int sinhVienId, int hocKiNamHocId, int dieu) {
+        Session s = factory.getObject().getCurrentSession();
+        String HQL
+                = "SELECT sv.id, d.dieu, d.diemToiDa, SUM(hd.diem) "
+                + "FROM SinhVienHoatDong svhd "
+                + "JOIN svhd.sinhVienId sv "
+                + "JOIN svhd.hoatDongId hd "
+                + "JOIN hd.dieuId d "
+                + "JOIN hd.hocKiNamHocId hn "
+                + "WHERE sv.id = :sinhVienId AND hn.id = :hocKiNamHocId AND d.id = :dieu "
+                + "GROUP BY sv.id, d.dieu, d.diemToiDa";
+        Query query = s.createQuery(HQL);
+        query.setParameter("sinhVienId", sinhVienId);
+        query.setParameter("hocKiNamHocId", hocKiNamHocId);
+        query.setParameter("dieu", dieu);
+        return query.getResultList();
+    }
+
+    public List<Object[]> laydanhsachbaothieu(int hockiId, int sinhvienId, int dieuId) {
+        Session s = factory.getObject().getCurrentSession();
+        String HQL = "SELECT hd.id, hd.ten, hd.diem  FROM HoatDong hd WHERE hd.hocKiNamHocId.id = :hocKiNamHocId AND hd.dieuId.id = :dieu AND hd NOT IN (SELECT hd " + "FROM SinhVienHoatDong svhd "
+                + "JOIN svhd.sinhVienId sv "
+                + "JOIN svhd.hoatDongId hd "
+                + "JOIN hd.hocKiNamHocId hn "
+                + "JOIN hd.dieuId d "
+                + "WHERE sv.id = :sinhVienId AND hn.id = :hocKiNamHocId AND svhd.trangThai = 1 AND d.id = :dieu)";
+        Query query = s.createQuery(HQL);
+        query.setParameter("sinhVienId", sinhvienId);
+        query.setParameter("hocKiNamHocId", hockiId);
+        query.setParameter("dieu", dieuId);
+
+        return query.getResultList();
+    }
+
+    public void taoBaoThieu(SinhVienHoatDong svhd) {
+        BaoThieu baothieu = new BaoThieu();
+
+        Session s = this.factory.getObject().getCurrentSession();
+        Query query = s.createQuery("FROM SinhVienHoatDong WHERE hoatDongId = :hoatDongId AND sinhVienId = :sinhVienId");
+        query.setParameter("hoatDongId", svhd.getHoatDongId());
+        query.setParameter("sinhVienId", svhd.getSinhVienId());
+        SinhVienHoatDong h = (SinhVienHoatDong) query.uniqueResult();
+
+        if (h == null) {
+            s.save(svhd);
+            baothieu.setSinhVienHoatDongId(svhd);
+            baothieu.setActive((short) 1);
+            s.save(baothieu);
+        } else {
+            baothieu.setSinhVienHoatDongId(h);
+            baothieu.setActive((short) 1);
+            s.save(baothieu);
+        }
+    }
+
+
 
 }

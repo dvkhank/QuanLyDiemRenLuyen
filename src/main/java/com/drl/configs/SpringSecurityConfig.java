@@ -28,7 +28,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @ComponentScan(basePackages = {
     "com.drl.controllers",
     "com.drl.repositories",
-    "com.drl.services"
+    "com.drl.services",
+        "com.drl.components",
+    "com.drl.filters"
 })
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -45,18 +47,32 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetails).passwordEncoder(passwordEncoder());
     }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+@Override
+protected void configure(HttpSecurity http) throws Exception {
+    http
+        .formLogin()
+            .loginPage("/login")
+            .usernameParameter("username")
+            .passwordParameter("password")
+            .defaultSuccessUrl("/")
+            .failureUrl("/login?error")
+            .and()
+        .logout()
+            .logoutSuccessUrl("/login")
+            .and()
+        .exceptionHandling()
+            .accessDeniedPage("/login?accessDenied")
+            .and()
+        .authorizeRequests()
+            .antMatchers("/").permitAll()
+            .antMatchers("/admin/troly").access("hasRole('ROLE_ADMIN')").antMatchers("/admin/statsbyall").access("hasRole('ROLE_ADMIN')")
+            .antMatchers("/admin/**").access("hasAnyRole('ROLE_ADMIN', 'ROLE_TROLY')")
 
-        http.formLogin().loginPage("/login").usernameParameter("username").passwordParameter("password");
-        http.formLogin().defaultSuccessUrl("/").failureUrl("/login?error");
-        http.logout().logoutSuccessUrl("/login");
-        http.exceptionHandling().accessDeniedPage("/login?accessDenied");
-        http.authorizeRequests().antMatchers("/").permitAll().antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')");
-        
-        http.csrf().disable();
+            .and()
+        .csrf()
+            .disable();
+}
 
-    }
 
     @Bean
     public Cloudinary cloudinary() {

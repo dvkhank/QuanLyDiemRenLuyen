@@ -6,6 +6,8 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="sec"
+           uri="http://www.springframework.org/security/tags" %> 
 <c:if test="${param.error !=null}">
     <div class="alert-danger">
         Đã có lỗi, vui lòng quay lại sau!
@@ -36,29 +38,56 @@
 
 
 
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">${statistic}</a>
+                <ul class="dropdown-menu">
+                    <sec:authorize access="hasRole('ROLE_ADMIN')">
+                    <li><a class="dropdown-item" href="<c:url value='/admin/statsbyall' />">Thống kê theo toàn trường</a></li>
+                    </sec:authorize>
+
+                    <li><a class="dropdown-item" href="<c:url value='/admin/statsbyfaculty' />">Thống kê theo khoa</a></li>
+                    <li><a class="dropdown-item" href="<c:url value='/admin/statsbyclass' />">Thống kê theo lớp</a></li>
+                </ul>
+            </li>
+            
+            </li>
+            
+            
+            
+
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">${featureMessage}</a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="<c:url value="/admin/baiviets" />">Bảng tin</a></li>
                         <li><a class="dropdown-item" href="<c:url value="/admin/baothieus" />">Báo thiếu</a></li>
-                        <li><a class="dropdown-item btn-info" href="<c:url value="/admin/stats" />">Thống kê</a></li>
-                        <li><a class="dropdown-item" href="<c:url value="/admin/napdiem" />">Nạp điểm</a></li>
-                        <li><a class="dropdown-item" href="<c:url value="/admin/troly" />">Tạo trợ lý</a></li>
-                    </ul>
+
+
+
                 </li>
-                <c:if test="${pageContext.request.userPrincipal.name == null}">
-                    <li class="nav-item">
-                        <a class="nav-link text-info" href="<c:url value='/login'/>">Đăng nhập</a>
-                    </li>
-                </c:if>
-                <c:if test="${pageContext.request.userPrincipal.name != null}">
-                    <li class="nav-item">
-                        <a class="nav-link text-info" href="<c:url value='/'/>">${pageContext.request.userPrincipal.name}</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-info" href="<c:url value='/logout'/>">Logout</a>
-                    </li>
-                </c:if>
+                <li><a class="dropdown-item" href="<c:url value="/admin/napdiem" />">Nạp điểm</a></li>
+                    <sec:authorize access="hasRole('ROLE_ADMIN')">
+
+                    <li><a class="dropdown-item" href="<c:url value="/admin/troly" />">Tạo trợ lý</a></li>
+                    </sec:authorize>
+
+
+            </ul>
+            </li>
+
+
+            <c:if test="${pageContext.request.userPrincipal.name == null}">
+                <li class="nav-item">
+                    <a class="nav-link text-info" href="<c:url value='/login'/>">Đăng nhập</a>
+                </li>
+            </c:if>
+            <c:if test="${pageContext.request.userPrincipal.name != null}">
+                <li class="nav-item">
+                    <a class="nav-link text-info" href="<c:url value='/'/>">${pageContext.request.userPrincipal.name}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-info" href="<c:url value='/logout'/>">Logout</a>
+                </li>
+            </c:if>
 
             </ul>
             <form action="<c:url value="/" />" class="d-flex">

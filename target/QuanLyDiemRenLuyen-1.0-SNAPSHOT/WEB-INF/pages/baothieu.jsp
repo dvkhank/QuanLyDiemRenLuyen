@@ -13,6 +13,21 @@
             <a href="?lang=jp">Japanese</a>
 
     </p>
+            <form>
+            <div class="form-floating">
+                <select class="form-select" id="hockinamhoc" name="hocKiNamHocId">
+                    <c:forEach items="${hocKiNamHocs}" var="c">
+                        <option value="${c.id}" >Học kì : ${c.hocKiId.getHocKi()} - Năm Học : ${c.namHocId.getNamHoc()}</option>
+                    </c:forEach>
+                </select>
+                <label for="hockinamhoc" class="form-label">CHỌN HỌC KÌ - NĂM HỌC</label>
+            </div>
+            <div class="form-floating mb-3 mt-3">
+                <button class='btn btn-success'>${filter}</button>
+            </div>
+        </form>
+    
+    
 <table class="table table-striped mt-3">
     <tr class="text-center">
         <th>ID</th>

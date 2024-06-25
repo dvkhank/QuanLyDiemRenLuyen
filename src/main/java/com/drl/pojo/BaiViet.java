@@ -4,6 +4,7 @@
  */
 package com.drl.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
@@ -22,6 +23,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -50,6 +52,7 @@ public class BaiViet implements Serializable {
     private Integer id;
     @Size(max = 1000)
     @Column(name = "ten")
+    @NotEmpty(message = "Tên không được phép rỗng")
     private String ten;
     @Column(name = "ngay_tao")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -62,9 +65,11 @@ public class BaiViet implements Serializable {
     @ManyToOne
     private HoatDong hoatDongId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "baiVietId")
+    @JsonIgnore
     private Set<Comment> commentSet;
 
     public BaiViet() {
+        this.ngayTao = new Date();
     }
 
     public BaiViet(Integer id) {
@@ -112,6 +117,7 @@ public class BaiViet implements Serializable {
     }
 
     @XmlTransient
+    @JsonIgnore
     public Set<Comment> getCommentSet() {
         return commentSet;
     }

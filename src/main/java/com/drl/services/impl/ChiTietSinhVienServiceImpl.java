@@ -4,6 +4,7 @@
  */
 package com.drl.services.impl;
 
+import com.drl.pojo.SinhVienHoatDong;
 import com.drl.repositories.ChiTietSinhVienRepository;
 import com.drl.services.ChiTietSinhVienService;
 import java.util.List;
@@ -81,6 +82,21 @@ public class ChiTietSinhVienServiceImpl implements ChiTietSinhVienService {
     public List<Object[]> getTongDiemTheoDieu5(int sinhVienId, int hocKiNamHocId) {
         return this.chiTietSvRepo.getTongDiemTheoDieu5(sinhVienId, hocKiNamHocId);
 
+    }
+
+    @Override
+    public List<Object[]> getTongDiemTheoDieu(int sinhVienId, int hocKiNamHocId, int dieu) {
+        return this.chiTietSvRepo.getTongDiemTheoDieu(sinhVienId, hocKiNamHocId, dieu);
+    }
+
+    @Override
+    public List<Object[]> laydanhsachbaothieu(int hockiId, int sinhvienId, int dieuId) {
+        return this.chiTietSvRepo.laydanhsachbaothieu(hockiId, sinhvienId, dieuId);
+    }
+
+    @Override
+    public void taoBaoThieu(SinhVienHoatDong svhd) {
+         this.chiTietSvRepo.taoBaoThieu(svhd);
     }
 
 }

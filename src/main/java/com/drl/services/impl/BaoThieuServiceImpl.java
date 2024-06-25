@@ -8,6 +8,7 @@ import com.drl.pojo.BaoThieu;
 import com.drl.repositories.BaoThieuRepository;
 import com.drl.services.BaoThieuService;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +21,8 @@ public class BaoThieuServiceImpl implements BaoThieuService{
     @Autowired
     private BaoThieuRepository baoThieurepo;
     @Override
-    public List<BaoThieu> getBaoThieus() {
-        return this.baoThieurepo.getBaoThieus();
+    public List<BaoThieu> getBaoThieus(Map<String, String> params) {
+        return this.baoThieurepo.getBaoThieus(params);
     }
 
     @Override

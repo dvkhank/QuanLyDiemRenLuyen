@@ -4,6 +4,7 @@
  */
 package com.drl.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.Basic;
@@ -44,10 +45,13 @@ public class Khoa implements Serializable {
     @Column(name = "ten")
     private String ten;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "khoaId")
+    @JsonIgnore
     private Set<HoatDong> hoatDongSet;
     @OneToMany(mappedBy = "khoaId")
+    @JsonIgnore
     private Set<Lop> lopSet;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "khoaId")
+    @JsonIgnore
     private Set<TroLySinhVien> troLySinhVienSet;
 
     public Khoa() {
@@ -124,5 +128,5 @@ public class Khoa implements Serializable {
     public String toString() {
         return "com.drl.pojo.Khoa[ id=" + id + " ]";
     }
-    
+
 }

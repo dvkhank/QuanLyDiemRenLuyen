@@ -39,7 +39,9 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 @ComponentScan(basePackages = {
     "com.drl.controllers",
     "com.drl.repositories",
-    "com.drl.services"
+    "com.drl.services",
+    "com.drl.components",
+    "com.drl.filters"
 })
 public class WebApplicationContextConfig implements WebMvcConfigurer {
 
@@ -98,7 +100,8 @@ public class WebApplicationContextConfig implements WebMvcConfigurer {
         resolver.setDefaultEncoding("UTF-8");
         return resolver;
     }
-        @Bean
+
+    @Bean
     public SessionLocaleResolver localeResolver() {
         SessionLocaleResolver localeResolver = new SessionLocaleResolver();
         localeResolver.setDefaultLocale(Locale.ENGLISH); // Ngôn ngữ mặc định
@@ -116,6 +119,5 @@ public class WebApplicationContextConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(localeChangeInterceptor());
     }
-    
 
 }
