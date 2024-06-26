@@ -5,7 +5,12 @@
 package com.drl.controllers;
 
 import com.drl.components.JwtService;
+import com.drl.pojo.Lop;
+import com.drl.pojo.NamHoc;
 import com.drl.pojo.NguoiDung;
+import com.drl.pojo.SinhVien;
+import com.drl.services.LopService;
+import com.drl.services.NamHocService;
 import com.drl.services.NguoiDungService;
 import java.security.Principal;
 import java.text.ParseException;
@@ -21,6 +26,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -43,6 +49,12 @@ public class ApiNguoiDungController {
 
     @Autowired
     private JwtService jwtService;
+    
+    @Autowired
+    private NamHocService namHocService;
+    
+    @Autowired
+    private LopService lopService;
 
     @PostMapping(path = "/nguoidung", consumes = {
         MediaType.APPLICATION_JSON_VALUE,
@@ -59,7 +71,7 @@ public class ApiNguoiDungController {
 
         n.setPassword(this.passwordEncoder.encode((password)));
         n.setUserRole("ROLE_SINHVIEN");
-        String namSinh = params.get("namsinh");
+        String namSinh = params.get("namSinh");
 
         if (namSinh != null && !namSinh.isEmpty()) {
             try {
@@ -76,7 +88,7 @@ public class ApiNguoiDungController {
         }
 
         // Xử lý giới tính
-        String gioiTinh = params.get("gioitinh");
+        String gioiTinh = params.get("gioiTinh");
         if (gioiTinh != null && !gioiTinh.isEmpty()) {
             try {
                 Short gt = Short.parseShort(gioiTinh);
@@ -94,6 +106,20 @@ public class ApiNguoiDungController {
             n.setFile((file[0]));
         }
         this.nguoiDungService.addNguoiDung(n);
+        
+        SinhVien sv = new SinhVien(n.getId());
+        int lopId = Integer.parseInt(params.get("lopId"));
+        Lop lop =  this.lopService.getLopById(lopId);
+        sv.setLopId(lop);
+        
+        int namId = Integer.parseInt(params.get("namId"));
+        NamHoc nam  = this.namHocService.getNamHocById(namId);
+        sv.setNamHocId(nam);
+        this.nguoiDungService.addSinhVien(sv);
+        
+        
+        
+        
     }
 
     @PostMapping("/login")
@@ -107,27 +133,16 @@ public class ApiNguoiDungController {
     }
 
     @GetMapping(path = "/current-user", produces = MediaType.APPLICATION_JSON_VALUE)
-    @CrossOrigin
-    public ResponseEntity<NguoiDung> getCurrentNguoiDung(Principal p) {
-                    System.out.println(p);
-        // Kiểm tra xem Principal p có null không
-        if (p == null || p.getName() == null) {
-
-            // Trả về HTTP 401 Unauthorized nếu không có Principal hoặc tên người dùng là null
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    public ResponseEntity<NguoiDung> getCurrentUsers(Principal principal, @RequestHeader("Authorization") String token) throws ParseException {
+        System.out.print(token);
+        String username = jwtService.getUsernameFromToken(token);
+        System.out.print(username);
+        NguoiDung user = nguoiDungService.getNguoiDungByUsername(username);
+        System.out.print(user);
+        if (user != null) {
+            return new ResponseEntity<>(user, HttpStatus.OK);
         }
-
-        // Gọi service để lấy thông tin người dùng dựa trên tên đăng nhập (username)
-        NguoiDung u = this.nguoiDungService.getNguoiDungByUsername(p.getName());
-
-        // Kiểm tra xem người dùng có tồn tại không
-        if (u == null) {
-            // Trả về HTTP 404 Not Found nếu không tìm thấy người dùng
-            return ResponseEntity.notFound().build();
-        }
-
-        // Trả về thông tin người dùng và HTTP 200 OK nếu thành công
-        return ResponseEntity.ok(u);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
 }

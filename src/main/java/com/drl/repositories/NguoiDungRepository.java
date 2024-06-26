@@ -5,6 +5,7 @@
 package com.drl.repositories;
 
 import com.drl.pojo.NguoiDung;
+import com.drl.pojo.SinhVien;
 
 /**
  *
@@ -15,4 +16,5 @@ public interface NguoiDungRepository {
     void addTroLy(NguoiDung nd, int khoaId);
     void addNguoiDung(NguoiDung nd);
     public boolean authNguoiDung(String username, String pasword);
+     public void addSinhVien(SinhVien sv);
 }

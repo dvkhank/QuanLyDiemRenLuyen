@@ -5,6 +5,7 @@
 package com.drl.services;
 
 import com.drl.pojo.NguoiDung;
+import com.drl.pojo.SinhVien;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 /**
@@ -16,4 +17,5 @@ public interface NguoiDungService extends UserDetailsService{
     void addTroLy(NguoiDung nd, int khoaId);
     void addNguoiDung(NguoiDung nd);
     public boolean authNguoiDung(String username, String pasword);
+     public void addSinhVien(SinhVien sv);
 }

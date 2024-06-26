@@ -31,4 +31,8 @@ public class LopRepositoryImpl implements LopRepository {
         Query query = s.createNamedQuery("Lop.findAll");
         return query.getResultList();
     }
+    public Lop getLopById(int id) {
+                Session s = this.factocry.getObject().getCurrentSession();
+                return s.get(Lop.class, id);
+    }
 }

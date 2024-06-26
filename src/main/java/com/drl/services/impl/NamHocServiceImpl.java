@@ -25,4 +25,10 @@ public class NamHocServiceImpl implements NamHocService {
         return this.namHocRepo.getNamHocs();
     }
 
+    @Override
+    public NamHoc getNamHocById(int id) {
+        return this.namHocRepo.getNamHocById(id);
+    }
+    
+
 }

@@ -4,6 +4,7 @@
  */
 package com.drl.repositories.impl;
 
+import com.drl.pojo.BaiViet;
 import com.drl.pojo.HoatDong;
 import com.drl.pojo.SinhVienHoatDong;
 import com.drl.repositories.HoatDongRepository;
@@ -104,6 +105,15 @@ public class HoatDongRepositoryImpl implements HoatDongRepository {
         for (SinhVienHoatDong svhd : rs) {
             s.delete(svhd);
         }
+        
+         Query query2 = s.createQuery("FROM BaiViet WHERE hoatDongId.id = :id");
+         query2.setParameter("id", id);
+         List<BaiViet> rs2 = query2.getResultList();
+         for(BaiViet bv : rs2) {
+             s.delete(bv);
+         }
+        
+        
 
         HoatDong h = this.getHoatDongByIDd(id);
         System.out.print(h);

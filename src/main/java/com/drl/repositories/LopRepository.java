@@ -13,4 +13,5 @@ import java.util.List;
  */
 public interface LopRepository {
     List<Lop> getLops();
+    public Lop getLopById(int id);
 }

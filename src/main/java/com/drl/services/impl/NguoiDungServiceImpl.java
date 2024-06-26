@@ -7,6 +7,7 @@ package com.drl.services.impl;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.drl.pojo.NguoiDung;
+import com.drl.pojo.SinhVien;
 import com.drl.repositories.NguoiDungRepository;
 import com.drl.services.NguoiDungService;
 import java.io.IOException;
@@ -85,6 +86,11 @@ public class NguoiDungServiceImpl implements NguoiDungService{
     @Override
     public boolean authNguoiDung(String username, String pasword) {
         return this.nguoiDungRepo.authNguoiDung(username, pasword);
+    }
+
+    @Override
+    public void addSinhVien(SinhVien sv) {
+        this.nguoiDungRepo.addSinhVien(sv);
     }
     
     

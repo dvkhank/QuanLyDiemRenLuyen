@@ -6,6 +6,7 @@ package com.drl.repositories.impl;
 
 import com.drl.pojo.Khoa;
 import com.drl.pojo.NguoiDung;
+import com.drl.pojo.SinhVien;
 import com.drl.pojo.TroLySinhVien;
 import com.drl.repositories.NguoiDungRepository;
 import org.hibernate.Session;
@@ -50,6 +51,11 @@ public class NguoiDungRepositoryImpl implements NguoiDungRepository {
         
         tl.setKhoaId(k);
         s.save(tl);
+    }
+    
+    public void addSinhVien(SinhVien sv) {
+                Session s = this.factory.getObject().getCurrentSession();
+                s.save(sv);
     }
 
     @Override

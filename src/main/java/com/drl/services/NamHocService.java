@@ -13,4 +13,5 @@ import java.util.List;
  */
 public interface NamHocService {
     List<NamHoc> getNamHocs();
+    public NamHoc getNamHocById(int id);
 }

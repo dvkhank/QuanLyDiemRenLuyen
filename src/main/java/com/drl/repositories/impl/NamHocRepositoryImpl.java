@@ -31,4 +31,8 @@ public class NamHocRepositoryImpl implements NamHocRepository {
         Query query = s.createNamedQuery("NamHoc.findAll");
         return query.getResultList();
     }
+    public NamHoc getNamHocById(int id) {
+                Session s = this.factocry.getObject().getCurrentSession();
+        return s.get(NamHoc.class, id);
+    }
 }

@@ -24,5 +24,11 @@ public class LopServiceImpl implements LopService {
     public List<Lop> getLops() {
         return this.lopRepo.getLops();
     }
+
+    @Override
+    public Lop getLopById(int id) {
+        return this.lopRepo.getLopById(id);
+    }
+    
     
 }

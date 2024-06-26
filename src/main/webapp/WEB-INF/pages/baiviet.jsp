@@ -18,6 +18,8 @@
     </p>
 <div class="container">
     <form:form action="${actions}"  method="post" modelAttribute="baiViet">
+            <form:errors path="*" element="div" cssClass="alert alert-danger"></form:errors>
+
         <div class="form-group">
             <label for="ten">${name}</label>
             <form:input type="text" class="form-control" id="ten" name="ten" placeholder="Nhập tên" path="ten"/>
